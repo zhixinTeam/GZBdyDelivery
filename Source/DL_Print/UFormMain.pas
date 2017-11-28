@@ -87,10 +87,11 @@ begin
   gSysLoger := TSysLoger.Create(gPath + 'Logs\');
   gSysLoger.LogEvent := ShowLog;
 
-  FTrayIcon := TTrayIcon.Create(Self);
-  FTrayIcon.Hint := Caption;
-  FTrayIcon.Visible := True;
-  
+//
+//  FTrayIcon := TTrayIcon.Create(Self);
+//  FTrayIcon.Hint := Caption;
+//  FTrayIcon.Visible := True;
+
   FBillList := TStringList.Create;
   FSyncLock := TCriticalSection.Create;
   //new item 
@@ -246,8 +247,7 @@ end;
 //Desc: 打印过路单
 function PrintBillLoadReport(nBill: string; var nHint: string;
  const nPrinter: string = ''; const nMoney: string = '0'): Boolean;
-var nStr: string;
-    nDS: TDataSet;
+var nStr, nPrintFH,nHKReocrd: string;
     nParam: TReportParamItem;
 begin
   Result := False;
@@ -256,14 +256,17 @@ begin
 
   WriteLog('PrintBillLoadReport：：：' + nBill);
 
-  nDS := FDM.SQLQuery(nStr, FDM.SQLQuery1);
-  if not Assigned(nDS) then Exit;
-
-  if nDS.RecordCount < 1 then
+  with FDM.SQLQuery(nStr, FDM.SQLQuery1) do
   begin
-    nHint := '交货单[ %s ] 已无效!!';
-    nHint := Format(nHint, [nBill]);
-    Exit;
+    if RecordCount < 1 then
+    begin
+      nHint := '交货单[ %s ] 已无效!!';
+      nHint := Format(nHint, [nBill]);
+      Exit;
+    end;
+
+    nPrintFH := FieldByName('L_PrintFH').AsString;
+    nHKReocrd:= FieldByName('L_HKRecord').AsString;
   end;
 
   nStr := gPath + 'Report\BillLoad.fr3';
@@ -280,15 +283,17 @@ begin
   nParam.FName := 'HKRecords';
   nParam.FValue := '';
 
-  if nDS.FieldByName('L_HKRecord').AsString<>'' then
+  if Length(nHKReocrd) > 0 then
   begin
     nStr := 'Select * From %s b Where L_HKRecord =''%s''';
-    nStr := Format(nStr, [sTable_Bill,
-            nDS.FieldByName('L_HKRecord').AsString]);
+    nStr := Format(nStr, [sTable_Bill, nHKReocrd]);
     //xxxxx
 
-    if FDM.SQLQuery(nStr, FDM.SQLTemp).RecordCount > 0 then
-      with FDM.SQLTemp do
+    with FDM.SQLQuery(nStr, FDM.SQLTemp) do
+    if RecordCount > 0 then
+    begin
+      First;
+
       while not Eof do
       try
         nStr := FieldByName('L_ID').AsString;
@@ -296,6 +301,7 @@ begin
       finally
         Next;
       end;
+    end;
   end;
   FDR.AddParamItem(nParam);
 
@@ -311,25 +317,25 @@ end;
 //Desc: 打印nBill交货单号
 function PrintBillReport(const nBill: string; var nHint: string;
  const nPrinter: string = ''; const nMoney: string = '0'): Boolean;
-var nStr, nPrintFH: string;
-    nDS: TDataSet;
+var nStr, nPrintFH,nHKReocrd: string;
     nParam: TReportParamItem;
 begin
   Result := False;
   nStr := 'Select *,%s As L_ValidMoney From %s b Where L_ID=''%s''';
   nStr := Format(nStr, [nMoney, sTable_Bill, nBill]);
 
-  nDS := FDM.SQLQuery(nStr, FDM.SQLQuery1);
-  if not Assigned(nDS) then Exit;
-
-  if nDS.RecordCount < 1 then
+  with FDM.SQLQuery(nStr, FDM.SQLQuery1) do
   begin
-    nHint := '交货单[ %s ] 已无效!!';
-    nHint := Format(nHint, [nBill]);
-    Exit;
-  end;
+    if RecordCount < 1 then
+    begin
+      nHint := '交货单[ %s ] 已无效!!';
+      nHint := Format(nHint, [nBill]);
+      Exit;
+    end;
 
-  nPrintFH := nDS.FieldByName('L_PrintFH').AsString;
+    nPrintFH := FieldByName('L_PrintFH').AsString;
+    nHKReocrd:= FieldByName('L_HKRecord').AsString;
+  end;
 
   nStr := gPath + 'Report\LadingBill.fr3';
   if not FDR.LoadReportFile(nStr) then
@@ -345,15 +351,17 @@ begin
   nParam.FName := 'HKRecords';
   nParam.FValue := '';
 
-  if nDS.FieldByName('L_HKRecord').AsString<>'' then
+  if Length(nHKReocrd) > 0 then
   begin
     nStr := 'Select * From %s b Where L_HKRecord =''%s''';
-    nStr := Format(nStr, [sTable_Bill,
-            nDS.FieldByName('L_HKRecord').AsString]);
+    nStr := Format(nStr, [sTable_Bill, nHKReocrd]);
     //xxxxx
 
-    if FDM.SQLQuery(nStr, FDM.SQLTemp).RecordCount > 0 then
-      with FDM.SQLTemp do
+    with FDM.SQLQuery(nStr, FDM.SQLTemp) do
+    if RecordCount > 0 then
+    begin
+      First;
+
       while not Eof do
       try
         nStr := FieldByName('L_ID').AsString;
@@ -361,6 +369,7 @@ begin
       finally
         Next;
       end;
+    end;
   end;
   FDR.AddParamItem(nParam);
 
@@ -369,7 +378,7 @@ begin
   FDR.PrintReport;
   Result := FDR.PrintSuccess;
 
-  if nPrintFH = 'Y' then
+  if (nPrintFH = 'Y') and Result then
   begin
     PrintBillLoadReport(nBill, nHint, nPrinter, nMoney);
   end;
@@ -384,10 +393,11 @@ var nStr: string;
     nDS: TDataSet;
 begin
   Result := False;
-  nStr := 'Select * From %s oo Inner Join %s od on oo.O_ID=od.D_OID Where D_ID=''%s''';
+  nStr := 'Select * From %s oo Inner Join %s od on oo.O_ID=od.D_OID ' +
+          'Where D_ID=''%s''';
   nStr := Format(nStr, [sTable_Order, sTable_OrderDtl, nOrder]);
 
-  nDS := FDM.SQLQuery(nStr, FDM.SQLQuery1);
+  nDS := FDM.SQLQuery(nStr, FDM.SQLOrder);
   if not Assigned(nDS) then Exit;
 
   if nDS.RecordCount < 1 then
@@ -408,7 +418,7 @@ begin
        FDR.Report1.PrintOptions.Printer := 'My_Default_Printer'
   else FDR.Report1.PrintOptions.Printer := nPrinter;
 
-  FDR.Dataset1.DataSet := FDM.SQLQuery1;
+  FDR.Dataset1.DataSet := FDM.SQLOrder;
   FDR.PrintReport;
   Result := FDR.PrintSuccess;
 end;
@@ -436,8 +446,8 @@ procedure TfFormMain.Timer2Timer(Sender: TObject);
 var nPos: Integer;
     nBill,nHint,nPrinter,nMoney, nType: string;
 begin
-  while True do
-  begin
+  Timer2.Enabled := False;
+  try
     FSyncLock.Enter;
     try
       if FBillList.Count < 1 then Exit;
@@ -477,10 +487,19 @@ begin
     end else nPrinter := '';
 
     WriteLog('开始打印: ' + nBill);
-    if nType = 'P' then
-         PrintOrderReport(nBill, nHint, nPrinter)
-    else PrintBillReport(nBill, nHint, nPrinter, nMoney);
+    try
+      if nType = 'P' then
+        PrintOrderReport(nBill, nHint, nPrinter) else
+      //if nType = 'S' then
+        PrintBillReport(nBill, nHint, nPrinter, nMoney);
+    except
+      on E: Exception do
+        WriteLog(E.Message);
+    end;
+
     WriteLog('打印结束.' + nHint);
+  finally
+    Timer2.Enabled := True;
   end;
 end;
 

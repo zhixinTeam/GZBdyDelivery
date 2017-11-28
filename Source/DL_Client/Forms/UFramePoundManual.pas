@@ -260,7 +260,7 @@ begin
         PoundTunnel := nT;
 
         Additional.Clear;
-        SplitStr(nT.FAdditional, Additional, 0, ';', False);
+        //SplitStr(nT.FAdditional, Additional, 0, ';', False);
         CardReader := gPoundCardReader.AddCardReader(ReadCardSync, nT.FID);
 
         LoadCollapseConfig(nIdx <> 0);

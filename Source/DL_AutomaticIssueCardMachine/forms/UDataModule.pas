@@ -9,10 +9,8 @@ interface
 uses
   SysUtils, Classes, DB, ADODB,Graphics,ULibFun, dxPSGlbl, dxPSUtl,
   dxPSEngn, dxPrnPg, dxBkgnd, dxWrap, dxPrnDev, dxPSCompsProvider,
-  dxPSFillPatterns, dxPSEdgePatterns, dxPSPDFExportCore, dxPSPDFExport,
-  cxDrawTextUtils, dxPSPrVwStd, dxPScxEditorProducers,
-  dxPScxExtEditorProducers, dxPScxPageControlProducer, dxPSCore,
-  dxPScxCommon, dxPScxGrid6Lnk;
+  dxPSFillPatterns, dxPSEdgePatterns, dxPSCore, dxPScxCommon,
+  dxPScxGrid6Lnk;
 
 type
   TFDM = class(TDataModule)

@@ -33,7 +33,7 @@ var
 implementation
 
 uses
-  SysUtils, USysLoger, UHardBusiness, UMgrTruckProbe, UMgrParam,
+  SysUtils, USysLoger, UHardBusiness, UMgrTruckProbe, UMgrParam, UMemDataPool,
   UMgrQueue, UMgrLEDCard, UMgrHardHelper, UMgrRemotePrint, U02NReader,
   UMgrERelay,  {$IFDEF MultiReplay}UMultiJS_Reply, {$ELSE}UMultiJS, {$ENDIF}
   UMgrRemoteVoice, UMgrCodePrinter, UMgrLEDDisp, UMgrRFID102, UMgrVoiceNet;
@@ -138,8 +138,15 @@ end;
 
 procedure THardwareWorker.InitSystemObject;
 begin
+  gMemDataManager := TMemDataManager.Create;
+  //内存管理
+  
   gHardwareHelper := THardwareHelper.Create;
   //远距读头
+
+  if not Assigned(g02NReader) then
+    g02NReader := T02NReader.Create;
+  //近距读头
 
   if not Assigned(gMultiJSManager) then
     gMultiJSManager := TMultiJSManager.Create;

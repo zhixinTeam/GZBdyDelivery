@@ -399,7 +399,7 @@ begin
 
     //查询手机号码
     nSql := 'select i_info from %s where i_group=''%s'' and i_Item=''%s'''
-        +' and i_itemid = (select l_cusid from s_bill where l_id in(%s))';
+        +' and i_itemid = (select l_cusid from s_bill where l_id in(''%s''))';
     nSql := Format(nSql,[sTable_ExtInfo,sFlag_CustomerItem,'手机',nBillno]);
 
     if FDM.QuerySQL(nSql).recordcount<=0 then

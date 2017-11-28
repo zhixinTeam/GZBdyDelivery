@@ -57,7 +57,7 @@ implementation
 {$R *.dfm}
 uses
   IniFiles, Registry, ULibFun, USysLoger, UMgrVoice, UMgrRemoteVoice,
-  UMgrVoiceNet;
+  UMgrVoiceNet, UMemDataPool;
 
 var
   gPath: string;               //³ÌÐòÂ·¾¶
@@ -83,12 +83,18 @@ begin
   gPath := ExtractFilePath(Application.ExeName);
   InitGlobalVariant(gPath, gPath+sConfig, gPath+sForm);
 
-  gSysLoger := TSysLoger.Create(gPath + 'Logs\');
+  gMemDataManager := TMemDataManager.Create;
+  //xxxx
+
+  gSysLoger := TSysLoger.Create(gPath + 'Logs\', sAutoStartKey);
   gSysLoger.LogEvent := ShowLog;
 
-  FTrayIcon := TTrayIcon.Create(Self);
-  FTrayIcon.Hint := Application.Title;
-  FTrayIcon.Visible := True;
+
+
+//
+//  FTrayIcon := TTrayIcon.Create(Self);
+//  FTrayIcon.Hint := Application.Title;
+//  FTrayIcon.Visible := True;
 
   nIni := nil;
   nReg := nil;

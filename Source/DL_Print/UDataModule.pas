@@ -14,6 +14,7 @@ type
     ADOConn: TADOConnection;
     SQLQuery1: TADOQuery;
     SQLTemp: TADOQuery;
+    SQLOrder: TADOQuery;
   private
     { Private declarations }
   public

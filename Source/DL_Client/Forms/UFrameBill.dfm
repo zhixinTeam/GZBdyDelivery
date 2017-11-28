@@ -174,60 +174,58 @@ inherited fFrameBill: TfFrameBill
     inherited dxGroup1: TdxLayoutGroup
       inherited GroupSearch1: TdxLayoutGroup
         object dxLayout1Item8: TdxLayoutItem
-          CaptionOptions.Text = #25552#36135#21333#21495':'
+          Caption = #25552#36135#21333#21495':'
           Control = EditLID
           ControlOptions.ShowBorder = False
         end
         object dxLayout1Item1: TdxLayoutItem
-          CaptionOptions.Text = #23458#25143#21517#31216':'
+          Caption = #23458#25143#21517#31216':'
           Control = EditCus
           ControlOptions.ShowBorder = False
         end
         object dxLayout1Item2: TdxLayoutItem
-          CaptionOptions.Text = #36710#29260#21495#30721':'
+          Caption = #36710#29260#21495#30721':'
           Control = EditTruck
           ControlOptions.ShowBorder = False
         end
         object dxlytmLayout1Item11: TdxLayoutItem
-          CaptionOptions.Text = #21345#29255#32534#21495':'
+          Caption = #21345#29255#32534#21495':'
           Control = EditYTCard
           ControlOptions.ShowBorder = False
         end
         object dxLayout1Item7: TdxLayoutItem
-          CaptionOptions.Text = #26085#26399#31579#36873':'
+          Caption = #26085#26399#31579#36873':'
           Control = EditDate
           ControlOptions.ShowBorder = False
         end
         object dxLayout1Item10: TdxLayoutItem
-          CaptionOptions.Visible = False
           Control = CheckDelete
           ControlOptions.ShowBorder = False
         end
       end
       inherited GroupDetail1: TdxLayoutGroup
         object dxLayout1Item3: TdxLayoutItem
-          CaptionOptions.Text = #25552#36135#21333#21495':'
+          Caption = #25552#36135#21333#21495':'
           Control = cxTextEdit1
           ControlOptions.ShowBorder = False
         end
         object dxLayout1Item4: TdxLayoutItem
-          CaptionOptions.Text = #23458#25143#21517#31216':'
+          Caption = #23458#25143#21517#31216':'
           Control = cxTextEdit2
           ControlOptions.ShowBorder = False
         end
         object dxLayout1Item9: TdxLayoutItem
-          CaptionOptions.Text = #27700#27877#21697#31181':'
+          Caption = #27700#27877#21697#31181':'
           Control = Edit1
           ControlOptions.ShowBorder = False
         end
         object dxLayout1Item6: TdxLayoutItem
-          CaptionOptions.Text = #25552#36135#36710#36742':'
+          Caption = #25552#36135#36710#36742':'
           Control = cxTextEdit4
           ControlOptions.ShowBorder = False
         end
         object dxLayout1Item5: TdxLayoutItem
-          AlignHorz = ahLeft
-          CaptionOptions.Text = #25552#36135#37327'('#21544'):'
+          Caption = #25552#36135#37327'('#21544'):'
           Control = cxTextEdit3
           ControlOptions.ShowBorder = False
         end

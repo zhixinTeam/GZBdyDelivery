@@ -130,7 +130,7 @@ begin
 
   gSysLoger := TSysLoger.Create(gPath + 'Logs\');
   gSysLoger.LogSync := False;
-  ShowConnectDBSetupForm(ConnCallBack,True);
+  ShowConnectDBSetupForm(ConnCallBack);
   ShowCursor(False);
 
   FDM.ADOConn.Close;
