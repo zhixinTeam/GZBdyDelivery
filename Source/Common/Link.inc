@@ -55,18 +55,8 @@
 
 //葛洲坝当阳
 {$IFDEF GZBDY}
-  {$DEFINE GZBJM}
   {$DEFINE ADDRETURN}
   {$DEFINE MultiReplay}
-{$ENDIF}
-
-//葛洲坝松滋
-{$IFDEF GZBSZ}
-  {$DEFINE GZBJM}
-{$ENDIF}
-
-//葛洲坝荆门
-{$IFDEF GZBJM}
   {$DEFINE COMMON}
   //使用常规
   {$DEFINE HYRFID201}
@@ -77,5 +67,6 @@
   //状态栏显示
   {$DEFINE MicroMsg}
   //微信支持
+  {$DEFINE ChangeYTSerialNo}
+  //修改云天业务流水号规则
 {$ENDIF}
-

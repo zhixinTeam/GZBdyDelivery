@@ -587,7 +587,7 @@ begin
       nCode := nCode + Date2Str(Now, False);;
       {$ENDIF}
 
-      {$IFDEF GZBJM}
+      //---
       nStr := FieldByName('L_ID').AsString;
       nIDLen := Length(nStr);
 
@@ -596,7 +596,7 @@ begin
       nCode := nCode + Copy(nStr, nPrefixLen + 7, nIDLen-nPreFixLen-6);
 
       nCode := Dbc2Sbc(nCode);
-      {$ENDIF}
+      //---
     end;
   end;
 

@@ -505,7 +505,12 @@ begin
 
   with gDBConnManager.WorkerQuery(FDBConn, nStr) do
   begin
-    if RecordCount<1 then Exit;
+    if RecordCount < 1 then
+    begin
+      nStr := '磁卡号[ %s ]不存在.';
+      nData := Format(nStr, [FIn.FData]);
+      Exit;
+    end;
 
     FOut.FData := Fields[0].AsString;
     Result := True;
@@ -2304,6 +2309,9 @@ end;
 //Parm: 表名;数据链路
 //Desc: 生成nTable的唯一记录号
 function YT_NewID(const nTable: string; const nWorker: PDBWorker): string;
+{$IFDEF ChangeYTSerialNo}
+var nStr: string;
+{$ENDIF}
 begin
   with nWorker.FExec do
   begin
@@ -2316,6 +2324,10 @@ begin
     ExecSQL;
 
     Result := Parameters.ParamByName('P2').Value;
+    {$IFDEF ChangeYTSerialNo}
+    nStr := Date2Str(Date(), False);
+    Result := StringReplace(Result, nStr+'1', nStr+'2', [rfIgnoreCase]);
+    {$ENDIF}
   end;
 end;
 

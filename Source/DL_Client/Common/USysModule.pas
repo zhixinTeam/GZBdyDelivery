@@ -13,7 +13,7 @@ uses
   UClientWorker, UMITPacker,
   UFrameLog, UFrameSysLog, UFormIncInfo, UFormBackupSQL, UFormRestoreSQL,
   UFormPassword, UFormBaseInfo, UFrameAuthorize, UFormAuthorize,
-  {$IFNDEF GZBJM}
+  //---
   UFrameCustomer, UFormCustomer, UFormGetCustom, UFrameSalesMan, UFormSalesMan,
   UFrameSaleContract, UFormSaleContract, UFrameZhiKa, UFormZhiKa,
   UFormGetContract, UFormZhiKaAdjust, UFormZhiKaFixMoney, UFrameZhiKaVerify,
@@ -24,7 +24,7 @@ uses
   UFrameInvoiceDtl, UFrameInvoiceZZ, UFormInvoiceZZAll, UFormInvoiceZZCus,
   UFormGetZhiKa, UFrameZhiKaDetail, UFormZhiKaFreeze,
   UFormZhiKaPrice,
-  {$ENDIF}
+  //---
   UFrameBill, UFormBill, UFormGetTruck, UFrameQueryDiapatch, UFrameTruckQuery,
   UFrameBillCard, UFormCard, UFormTruckIn, UFormTruckOut, UFormLadingDai,
   UFormLadingSan, UFramePoundManual, UFramePoundAuto, UFramePMaterails,
