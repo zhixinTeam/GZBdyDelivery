@@ -36,7 +36,8 @@ uses
   SysUtils, USysLoger, UHardBusiness, UMgrTruckProbe, UMgrParam, UMemDataPool,
   UMgrQueue, UMgrLEDCard, UMgrHardHelper, UMgrRemotePrint, U02NReader,
   UMgrERelay,  {$IFDEF MultiReplay}UMultiJS_Reply, {$ELSE}UMultiJS, {$ENDIF}
-  UMgrRemoteVoice, UMgrCodePrinter, UMgrLEDDisp, UMgrRFID102, UMgrVoiceNet;
+  UMgrRemoteVoice, UMgrCodePrinter, UMgrLEDDisp, UMgrRFID102, UMgrVoiceNet,
+  UMgrSendCardNo;
 
 class function THardwareWorker.ModuleInfo: TPlugModuleInfo;
 begin
@@ -111,7 +112,13 @@ begin
     begin
       gProberManager := TProberManager.Create;
       gProberManager.LoadConfig(nCfg + 'TruckProber.xml');
-    end;  
+    end;
+
+    {$IFDEF FixLoad}
+    nStr := '¶¨ÖÃ×°³µ';
+    gSendCardNo.LoadConfig(nCfg + 'PLCController.xml');
+    {$ENDIF}
+
   except
     on E:Exception do
     begin
@@ -154,6 +161,10 @@ begin
 
   gHardShareData := WhenBusinessMITSharedDataIn;
   //hard monitor share
+
+  {$IFDEF FixLoad}
+  gSendCardNo := TReaderHelper.Create;
+  {$ENDIF}
 end;
 
 procedure THardwareWorker.BeforeStartServer;
@@ -201,6 +212,12 @@ begin
   //led display
   gDisplayManager.StartDisplay;
   //small led
+
+  {$IFDEF FixLoad}
+  if Assigned(gSendCardNo) then
+  gSendCardNo.StartPrinter;
+  //sendcard
+  {$ENDIF}
 end;
 
 procedure THardwareWorker.AfterStopServer;
@@ -246,6 +263,13 @@ begin
 
   gTruckQueueManager.StopQueue;
   //queue
+
+  {$IFDEF FixLoad}
+  if Assigned(gSendCardNo) then
+  gSendCardNo.StopPrinter;
+  //sendcard
+  {$ENDIF}
+
 end;
 
 end.

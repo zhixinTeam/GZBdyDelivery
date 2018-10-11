@@ -69,4 +69,6 @@
   //微信支持
   {$DEFINE ChangeYTSerialNo}
   //修改云天业务流水号规则
+  {$DEFINE FixLoad}
+  //转子秤定制装车
 {$ENDIF}

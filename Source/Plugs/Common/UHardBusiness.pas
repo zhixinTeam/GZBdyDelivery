@@ -12,7 +12,7 @@ uses
   UBusinessWorker, UBusinessConst, UBusinessPacker, UMgrQueue,
   UMgrHardHelper, U02NReader, UMgrERelay,
   {$IFDEF MultiReplay}UMultiJS_Reply, {$ELSE}UMultiJS, {$ENDIF} UMgrRemotePrint,
-  UMgrLEDDisp, UMgrRFID102;//, UBlueReader;
+  UMgrLEDDisp, UMgrRFID102, UMgrSendCardNo;//, UBlueReader;
 
 procedure WhenReaderCardArrived(const nReader: THHReaderItem);
 procedure WhenHYReaderCardArrived(const nReader: PHYReaderItem);
@@ -1446,6 +1446,12 @@ begin
     nStr := '散装车辆[ %s ]再次刷卡装车.';
     nStr := Format(nStr, [nTrucks[0].FTruck]);
     WriteNearReaderLog(nStr);
+
+    {$IFDEF FixLoad}
+    WriteNearReaderLog('启动定置装车::'+nTunnel+'@'+nCard);
+    //发送卡号和通道号到定置装车服务器
+    gSendCardNo.SendCardNo(nTunnel+'@'+nCard);
+    {$ENDIF}
     
     TruckStartFH(nPTruck, nTunnel);
     Exit;
@@ -1462,6 +1468,11 @@ begin
 
   TruckStartFH(nPTruck, nTunnel);
   //执行放灰
+  {$IFDEF FixLoad}
+  WriteNearReaderLog('启动定置装车::'+nTunnel+'@'+nCard);
+  //发送卡号和通道号到定置装车服务器
+  gSendCardNo.SendCardNo(nTunnel+'@'+nCard);
+  {$ENDIF}
 end;
 
 //Date: 2012-4-24
@@ -1489,6 +1500,12 @@ procedure WhenReaderCardOut(const nCard: string; const nHost: PReaderHost);
 begin
   {$IFDEF DEBUG}
   WriteHardHelperLog('WhenReaderCardOut退出.');
+  {$ENDIF}
+
+  {$IFDEF FixLoad}
+  WriteHardHelperLog('停止定置装车::'+nHost.FTunnel+'@Close');
+  //发送卡号和通道号到定置装车服务器
+  gSendCardNo.SendCardNo(nHost.FTunnel+'@Close');
   {$ENDIF}
 
   gERelayManager.LineClose(nHost.FTunnel);

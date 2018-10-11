@@ -2061,43 +2061,46 @@ begin
   Result := False;
   nCusId := Trim(fin.FData);
   if nCusId='' then Exit;
-  nStr := 'select XCB_ID,' +                      //内部编号
-        '  XCB_CardId,' +                       //销售卡片编号
-        '  XCB_Origin,' +                       //卡片来源
-        '  XCB_BillID,' +                       //来源单据号
-        '  XCB_SetDate,' +                      //办理日期
-        '  XCB_CardType,' +                     //卡片类型
-        '  XCB_SourceType,' +                   //来源类型
-        '  XCB_Option,' +                       //控制方式:0,控单价;1,控数量
-        '  XCB_Client,' +                       //客户编号
-        '  xob.XOB_Name as XCB_ClientName,' +   //客户名称
-        '  xgd.XOB_Name as XCB_WorkAddr,' +     //工程工地
-        '  XCB_Alias,' +                        //客户别名
-        '  XCB_OperMan,' +                      //业务员
-        '  XCB_Area,' +                         //销售区域
-        '  XCB_CementType as XCB_Cement,' +     //品种编号
-        '  PCM_Name as XCB_CementName,' +       //品种名称
-        '  XCB_LadeType,' +                     //提货方式
-        '  XCB_Number,' +                       //初始数量
-        '  XCB_FactNum,' +                      //已开数量
-        '  XCB_PreNum,' +                       //原已提量
-        '  XCB_ReturnNum,' +                    //退货数量
-        '  XCB_OutNum,' +                       //转出数量
-        '  XCB_RemainNum,' +                    //剩余数量
-        '  XCB_ValidS,XCB_ValidE,' +            //提货有效期
-        '  XCB_AuditState,' +                   //审核状态
-        '  XCB_Status,' +                       //卡片状态:0,停用;1,启用;2,冲红;3,作废
-        '  XCB_IsImputed,' +                    //卡片是否估算
-        '  XCB_IsOnly,' +                       //是否一车一票
-        '  XCB_Del,' +                          //删除标记:0,正常;1,删除
-        '  XCB_Creator,' +                      //创建人
-        '  pub.pub_name as XCB_CreatorNM,' +    //创建人名
-        '  XCB_CDate,' +                        //创建时间
-        '  XCB_Firm,' +                         //所属厂区
-        '  pbf.pbf_name as XCB_FirmName,' +     //工厂名称
-        '  pcb.pcb_id, pcb.pcb_name, ' +        //销售片区
-        '  xcg.xob_id as XCB_TransID, ' +       //运输单位编号
-        '  xcg.XOB_Name as XCB_TransName ' +    //运输单位
+  nStr := 'Select * From ' +
+        '(select xcb.XCB_ID,' +                      //内部编号
+        '  xcb.XCB_CardId,' +                       //销售卡片编号
+        '  xcb.XCB_Origin,' +                       //卡片来源
+        '  xcb.XCB_BillID,' +                       //来源单据号
+        '  xcb.XCB_SetDate,' +                      //办理日期
+        '  xcb.XCB_CardType,' +                     //卡片类型
+        '  xcb.XCB_SourceType,' +                   //来源类型
+        '  xcb.XCB_Option,' +                       //控制方式:0,控单价;1,控数量
+        '  xcb.XCB_Client,' +                       //客户编号
+        '  xob.XOB_Name as XCB_ClientName,' +       //客户名称
+        '  xgd.XOB_Name as XCB_WorkAddr,' +         //工程工地
+        '  xcb.XCB_Alias,' +                        //客户别名
+        '  xcb.XCB_OperMan,' +                      //业务员
+        '  xcb.XCB_Area,' +                         //销售区域
+        '  xcb.XCB_CementType as XCB_Cement,' +     //品种编号
+        '  PCM_Name as XCB_CementName,' +           //品种名称
+        '  xcb.XCB_LadeType,' +                     //提货方式
+        '  xcb.XCB_Number,' +                       //初始数量
+        '  xcb.XCB_FactNum,' +                      //已开数量
+        '  xcb.XCB_PreNum,' +                       //原已提量
+        '  xcb.XCB_ReturnNum,' +                    //退货数量
+        '  xcb.XCB_OutNum,' +                       //转出数量
+        '  vcb.XCB_FactRemain,' +                   //剩余数量
+        '  xcb.XCB_ValidS,XCB_ValidE,' +            //提货有效期
+        '  xcb.XCB_AuditState,' +                   //审核状态
+        '  xcb.XCB_Status,' +                       //卡片状态:0,停用;1,启用;2,冲红;3,作废
+        '  xcb.XCB_IsImputed,' +                    //卡片是否估算
+        '  xcb.XCB_IsOnly,' +                       //是否一车一票
+        '  xcb.XCB_Del,' +                          //删除标记:0,正常;1,删除
+        '  xcb.XCB_Creator,' +                      //创建人
+        '  pub.pub_name as XCB_CreatorNM,' +        //创建人名
+        '  xcb.XCB_CDate,' +                        //创建时间
+        '  xcb.XCB_Firm,' +                         //所属厂区
+        '  pbf.pbf_name as XCB_FirmName,' +         //工厂名称
+        '  pcb.pcb_id, pcb.pcb_name, ' +            //销售片区
+        //'  '''' as XCB_TransID, ' +                 //运输单位编号
+        //'  '''' as XCB_TransName ' +                //运输单位
+        '  xcg.xob_id as XCB_TransID, ' +             //运输单位编号
+        '  xcg.XOB_Name as XCB_TransName ' +          //运输单位
         'from XS_Card_Base xcb' +
         '  left join XS_Compy_Base xob on xob.XOB_ID = xcb.XCB_Client' +
         '  left join XS_Compy_Base xgd on xgd.XOB_ID = xcb.xcb_sublader' +
@@ -2105,11 +2108,22 @@ begin
         '  Left Join pb_code_block pcb On pcb.pcb_id=xob.xob_block' +
         '  Left Join pb_basic_firm pbf On pbf.pbf_id=xcb.xcb_firm' +
         '  Left Join PB_USER_BASE pub on pub.pub_id=xcb.xcb_creator ' +
+        '  Left Join v_Card_Base1 vcb on vcb.XCB_ID=xcb.XCB_ID ' +
         '  Left Join XS_Card_Freight xcf on xcf.Xcf_Card=xcb.xcb_ID ' +
         '  Left Join XS_Compy_Base xcg on xcg.xob_id=xcf.xcf_tran ' +
-        //可用数量大于0、卡片启用并且处于已审核状态
-        'where xcb.XCB_RemainNum>0.001 and XCB_Status=''1'' and XCB_AuditState=''201'' and xcb.XCB_Client = ''%s''';
+        //未删除、可用数量大于0、卡片启用并且处于已审核状态、未锁定
+        ' where  xcb.xcb_del=''0'''
+              +' and xcb.XCB_Status=''1'''
+              +' and vcb.XCB_FactRemain>0'
+              +' and xcb.XCB_IsLock<>''1'''
+              +' and ((xcb.XCB_AuditState=''201'') or (xcb.XCB_IsOnly=''1''))'
+              +' and xcb.XCB_Client = ''%s'' ' +
+        'Order By xcb.XCB_SetDate DESC) t Where Rownum <= 100';
+        //排序后,取前100条
   nStr := Format(nStr,[nCusId]);
+
+  WriteLog(Format('GetOrderList = > [ 订单信息.%s ]', [nStr]));
+  //查询语句
 
   nWorker := nil;
 
@@ -2150,7 +2164,7 @@ begin
         FListB.Values['XCB_PreNum']     := FloatToStr(FieldByName('XCB_PreNum').AsFloat);
         FListB.Values['XCB_ReturnNum']  := FloatToStr(FieldByName('XCB_ReturnNum').AsFloat);
         FListB.Values['XCB_OutNum']     := FloatToStr(FieldByName('XCB_OutNum').AsFloat);
-        FListB.Values['XCB_RemainNum']  := FloatToStr(FieldByName('XCB_RemainNum').AsFloat);
+        FListB.Values['XCB_RemainNum']  := FloatToStr(FieldByName('XCB_FactRemain').AsFloat);
         FListB.Values['XCB_AuditState'] := FieldByName('XCB_AuditState').AsString;
         FListB.Values['XCB_Status']     := FieldByName('XCB_Status').AsString;
         FListB.Values['XCB_IsOnly']     := FieldByName('XCB_IsOnly').AsString;
