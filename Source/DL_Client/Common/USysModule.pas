@@ -13,18 +13,6 @@ uses
   UClientWorker, UMITPacker,
   UFrameLog, UFrameSysLog, UFormIncInfo, UFormBackupSQL, UFormRestoreSQL,
   UFormPassword, UFormBaseInfo, UFrameAuthorize, UFormAuthorize,
-  //---
-  UFrameCustomer, UFormCustomer, UFormGetCustom, UFrameSalesMan, UFormSalesMan,
-  UFrameSaleContract, UFormSaleContract, UFrameZhiKa, UFormZhiKa,
-  UFormGetContract, UFormZhiKaAdjust, UFormZhiKaFixMoney, UFrameZhiKaVerify,
-  UFormZhiKaVerify, UFrameShouJu, UFormShouJu, UFramePayment, UFormPayment,
-  UFrameCustomerCredit, UFormCustomerCredit, UFrameCusAccount,
-  UFrameCusInOutMoney, UFrameInvoiceWeek, UFormInvoiceWeek, UFormInvoiceGetWeek,
-  UFrameInvoice, UFormInvoice, UFormInvoiceAdjust,UFrameInvoiceK, UFormInvoiceK,
-  UFrameInvoiceDtl, UFrameInvoiceZZ, UFormInvoiceZZAll, UFormInvoiceZZCus,
-  UFormGetZhiKa, UFrameZhiKaDetail, UFormZhiKaFreeze,
-  UFormZhiKaPrice,
-  //---
   UFrameBill, UFormBill, UFormGetTruck, UFrameQueryDiapatch, UFrameTruckQuery,
   UFrameBillCard, UFormCard, UFormTruckIn, UFormTruckOut, UFormLadingDai,
   UFormLadingSan, UFramePoundManual, UFramePoundAuto, UFramePMaterails,
